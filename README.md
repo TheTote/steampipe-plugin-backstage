@@ -25,5 +25,7 @@ Copy the default config file:
 
 Apache 2
 
-[steampipe]: https://steampipe.io
-[backstage]: https://backstage.io/
+## Resources
+
+- [steampipe]: https://steampipe.io
+- [backstage]: https://backstage.io/
