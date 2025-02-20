@@ -19,7 +19,7 @@ To build the plugin and install it in your `.steampipe` directory
 
 Copy the default config file:
 
-    cp config/backstage.spc ~/.steampipe/config/backstage.spc
+    make config
 
 ## License
 
