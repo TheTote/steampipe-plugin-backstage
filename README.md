@@ -27,5 +27,5 @@ Apache 2
 
 ## Resources
 
-- [steampipe]: https://steampipe.io
-- [backstage]: https://backstage.io/
+- [steampipe](https://steampipe.io)
+- [backstage](https://backstage.io/)
