@@ -8,4 +8,4 @@
 # - install: Installs the built executables and other necessary files to the system.
 
 install: ## Install the plugin
-	go build -o  ~/.steampipe/plugins/hub.steampipe.io/plugins/chussenot/backstage@latest/steampipe-plugin-backstage.plugin *.go
+	go build -o  $(HOME)/.steampipe/plugins/hub.steampipe.io/plugins/steampipe-plugin-backstage.plugin *.go

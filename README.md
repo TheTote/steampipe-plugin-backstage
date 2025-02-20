@@ -3,7 +3,7 @@
 Use SQL to query namespaces, rules and more from [Backstage][https://backstage.io/].
 
 - **[Get started →](docs/index.md)**
-- Documentation: [Table definitions & examples](docs/tables)
+- Documentation: [Table definitions & examples](docs/tables.md)
 
 ## Quick start
 

@@ -73,7 +73,7 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/sethvargo/go-retry v0.2.4 // indirect
 	github.com/stevenle/topsort v0.2.0 // indirect
-	github.com/tdabasinskas/go-backstage/v2 v2.5.1 // indirect
+	github.com/datolabs-io/go-backstage/v3 v3.0.0 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/turbot/go-kit v0.10.0-rc.0 // indirect
 	github.com/turbot/steampipe-plugin-sdk v1.8.3 // indirect
