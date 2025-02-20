@@ -9,3 +9,6 @@
 
 install: ## Install the plugin
 	go build -o  $(HOME)/.steampipe/plugins/hub.steampipe.io/plugins/steampipe-plugin-backstage.plugin *.go
+
+config: ## Copy the backstage config to the steampipe config folder
+	cp .steampipe/config/backstage.spc $(HOME)/.steampipe/config/backstage.spc
