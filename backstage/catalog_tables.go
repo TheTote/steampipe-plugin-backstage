@@ -3,6 +3,9 @@ package backstage
 import (
 	"context"
 
+	"net/http"
+
+	"github.com/datolabs-io/go-backstage/v3"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -251,6 +254,25 @@ func listComponents(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your entity listing logic here
+	baseURL := "http://your-backstage-url"
+	httpClient := &http.Client{}
+	client, err := backstage.NewClient(baseURL, "default", httpClient)
+	if err != nil {
+		return nil, err
+	}
+
+	entities, _, err := client.Catalog.Entities.List(ctx, &backstage.ListEntityOptions{
+		Filters: []string{},
+		Fields:  []string{},
+		Order:   []backstage.ListEntityOrder{{Direction: backstage.OrderDescending, Field: "metadata.name"}},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	for _, entity := range entities {
+		d.StreamListItem(ctx, entity)
+	}
+
 	return nil, nil
 }
