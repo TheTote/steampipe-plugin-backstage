@@ -244,7 +244,37 @@ func listGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 }
 
 func listUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// TODO: Implement user listing
+	// Get plugin config
+	config := GetConfig(d.Connection)
+
+	if config.Host == nil || config.Token == nil {
+		return nil, fmt.Errorf("host and token must be configured")
+	}
+
+	plugin.Logger(ctx).Debug("backstage_catalog_user.listUsers", "config", config)
+
+	httpClient := &http.Client{}
+	client, err := backstage.NewClient(*config.Host, *config.Token, httpClient)
+	if err != nil {
+		plugin.Logger(ctx).Error("backstage_catalog_user.listUsers", "connection_error", err)
+		return nil, fmt.Errorf("error creating backstage client: %v", err)
+	}
+
+	opts := &backstage.ListEntityOptions{
+		Filters: []string{"kind=User"},
+		Fields:  []string{},
+	}
+
+	users, _, err := client.Catalog.Entities.List(ctx, opts)
+	if err != nil {
+		plugin.Logger(ctx).Error("backstage_catalog_user.listUsers", "query_error", err)
+		return nil, fmt.Errorf("error listing users: %v", err)
+	}
+
+	for _, user := range users {
+		d.StreamListItem(ctx, user)
+	}
+
 	return nil, nil
 }
 
