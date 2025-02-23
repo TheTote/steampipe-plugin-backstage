@@ -1,0 +1,24 @@
+name: Build and Deploy Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Build
+        run: |
+          go build -o steampipe-plugin-backstage.plugin *.go
+
+      # Add additional steps for publishing to Steampipe Hub 

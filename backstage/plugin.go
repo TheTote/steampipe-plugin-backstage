@@ -24,15 +24,15 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			NewInstance: ConfigInstance,
 			Schema: map[string]*schema.Attribute{
 				"host": {
-					Type:        schema.TypeString,
-					Required:    true,
-					Description: "Backstage instance URL (e.g., https://backstage.example.com)",
+					Type:                schema.TypeString,
+					Required:            true,
+					MarkdownDescription: "Backstage instance URL (e.g., https://backstage.example.com)",
 				},
 				"token": {
-					Type:        schema.TypeString,
-					Required:    true,
-					Description: "Backstage API token for authentication",
-					Sensitive:   true,
+					Type:                schema.TypeString,
+					Required:            true,
+					MarkdownDescription: "Backstage API token for authentication",
+					Sensitive:           true,
 				},
 			},
 		},
