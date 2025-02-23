@@ -10,6 +10,20 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
+// Common columns that appear in most catalog tables
+var commonColumns = []*plugin.Column{
+	{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the entity"},
+	{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
+	{Name: "kind", Type: proto.ColumnType_STRING, Description: "Kind of the entity"},
+	{Name: "title", Type: proto.ColumnType_STRING, Description: "Display title of the entity"},
+	{Name: "description", Type: proto.ColumnType_STRING, Description: "Description of the entity"},
+	{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
+	{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
+	{Name: "links", Type: proto.ColumnType_JSON, Description: "Links associated with the entity"},
+	{Name: "metadata", Type: proto.ColumnType_JSON, Description: "Full metadata of the entity"},
+	{Name: "spec", Type: proto.ColumnType_JSON, Description: "Full specification of the entity"},
+}
+
 func tableBackstageGroup() *plugin.Table {
 	return &plugin.Table{
 		Name:        "backstage_catalog_group",
@@ -216,28 +230,43 @@ func listGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		return nil, fmt.Errorf("host and token must be configured")
 	}
 
-	plugin.Logger(ctx).Debug("backstage_catalog_group.listGroups", "config", config)
-
-	httpClient := &http.Client{}
-	client, err := backstage.NewClient(*config.Host, *config.Token, httpClient)
+	client, err := getClient(config)
 	if err != nil {
-		plugin.Logger(ctx).Error("backstage_catalog_group.listGroups", "connection_error", err)
-		return nil, fmt.Errorf("error creating backstage client: %v", err)
+		return nil, err
+	}
+
+	// Get the limit
+	limit := d.QueryContext.Limit
+	if limit != nil {
+		if *limit < 1 {
+			return nil, nil
+		}
 	}
 
 	opts := &backstage.ListEntityOptions{
 		Filters: []string{"kind=Group"},
 		Fields:  []string{},
+		Limit:   int(limit),
 	}
 
-	groups, _, err := client.Catalog.Entities.List(ctx, opts)
-	if err != nil {
-		plugin.Logger(ctx).Error("backstage_catalog_group.listGroups", "query_error", err)
-		return nil, fmt.Errorf("error listing groups: %v", err)
-	}
+	// Handle pagination
+	var cursor string
+	for {
+		groups, resp, err := client.Catalog.Entities.List(ctx, opts)
+		if err != nil {
+			plugin.Logger(ctx).Error("backstage_catalog_group.listGroups", "query_error", err)
+			return nil, fmt.Errorf("error listing groups: %v", err)
+		}
 
-	for _, group := range groups {
-		d.StreamListItem(ctx, group)
+		for _, group := range groups {
+			d.StreamListItem(ctx, group)
+		}
+
+		cursor = resp.Header.Get("Link")
+		if cursor == "" {
+			break
+		}
+		opts.After = cursor
 	}
 
 	return nil, nil
@@ -323,27 +352,48 @@ func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 
 	plugin.Logger(ctx).Debug("backstage_catalog_entity.listEntities", "config", config)
 
-	httpClient := &http.Client{}
-	client, err := backstage.NewClient(*config.Host, *config.Token, httpClient)
+	client, err := getClient(config)
 	if err != nil {
-		plugin.Logger(ctx).Error("backstage_catalog_entity.listEntities", "connection_error", err)
-		return nil, fmt.Errorf("error creating backstage client: %v", err)
+		return nil, err
+	}
+
+	// Get the limit
+	limit := d.QueryContext.Limit
+	if limit != nil {
+		if *limit < 1 {
+			return nil, nil
+		}
 	}
 
 	opts := &backstage.ListEntityOptions{
-		Filters: []string{},
-		Fields:  []string{},
-		Order:   []backstage.ListEntityOrder{{Direction: backstage.OrderDescending, Field: "metadata.name"}},
+		Fields: []string{},
+		Limit:  int(limit),
 	}
 
-	entities, _, err := client.Catalog.Entities.List(ctx, opts)
-	if err != nil {
-		plugin.Logger(ctx).Error("backstage_catalog_entity.listEntities", "query_error", err)
-		return nil, fmt.Errorf("error listing entities: %v", err)
-	}
+	// Handle pagination using cursor-based pagination
+	var cursor string
+	for {
+		entities, resp, err := client.Catalog.Entities.List(ctx, opts)
+		if err != nil {
+			plugin.Logger(ctx).Error("backstage_catalog_entity.listEntities", "query_error", err)
+			return nil, fmt.Errorf("error listing entities: %v", err)
+		}
 
-	for _, entity := range entities {
-		d.StreamListItem(ctx, entity)
+		for _, entity := range entities {
+			d.StreamListItem(ctx, entity)
+		}
+
+		// Check if we've reached the limit
+		if limit != nil && d.RowsProcessed() >= *limit {
+			return nil, nil
+		}
+
+		// Get next page cursor
+		cursor = resp.Header.Get("Link")
+		if cursor == "" {
+			break
+		}
+		opts.After = cursor
 	}
 
 	return nil, nil
