@@ -19,9 +19,8 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 					Description: "Backstage instance URL (e.g., https://backstage.example.com)",
 				},
 				"token": {
-					Type:        schema.TypeString,
-					Required:    true,
-					Description: "Backstage API token for authentication",
+					Type:     schema.TypeString,
+					Required: true,
 				},
 			},
 		},
