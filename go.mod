@@ -1,8 +1,8 @@
 module github.com/chussenot/steampipe-plugin-backstage
 
-go 1.21
+go 1.23
 
-toolchain go1.23.1
+toolchain go1.23.2
 
 require github.com/turbot/steampipe-plugin-sdk/v5 v5.10.4
 
@@ -73,10 +73,8 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/sethvargo/go-retry v0.2.4 // indirect
 	github.com/stevenle/topsort v0.2.0 // indirect
-	github.com/datolabs-io/go-backstage/v3 v3.0.0 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/turbot/go-kit v0.10.0-rc.0 // indirect
-	github.com/turbot/steampipe-plugin-sdk v1.8.3 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/zclconf/go-cty v1.14.4 // indirect
 	go.opencensus.io v0.24.0 // indirect

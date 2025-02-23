@@ -1,11 +1,11 @@
 connection "backstage" {
-    plugin  = "chussenot/backstage"
+    plugin = "chussenot/backstage"
 
-    # Base URL of the Backstage API (required)
-    # For example: https://backstage.example.com
-    base_url = "https://your-backstage-instance.com"
+    # Backstage instance URL (required)
+    # Can also be set with BACKSTAGE_HOST environment variable
+    host = "https://backstage.example.com"
 
-    # API token for authentication (required)
-    # Generate this token from your Backstage instance settings
-    api_token = "your-api-token-here"
+    # Backstage API token for authentication (required)
+    # Can also be set with BACKSTAGE_TOKEN environment variable
+    token = "your-api-token-here"
 }

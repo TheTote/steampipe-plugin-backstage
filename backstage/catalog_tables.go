@@ -2,7 +2,7 @@ package backstage
 
 import (
 	"context"
-
+	"fmt"
 	"net/http"
 
 	"github.com/datolabs-io/go-backstage/v3"
@@ -12,8 +12,8 @@ import (
 
 func tableBackstageGroup() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_group",
-		Description: "Backstage group table",
+		Name:        "backstage_catalog_group",
+		Description: "Groups in the Backstage catalog",
 		List: &plugin.ListConfig{
 			Hydrate: listGroups,
 		},
@@ -32,8 +32,8 @@ func tableBackstageGroup() *plugin.Table {
 
 func tableBackstageUser() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_user",
-		Description: "Backstage user table",
+		Name:        "backstage_catalog_user",
+		Description: "Users in the Backstage catalog",
 		List: &plugin.ListConfig{
 			Hydrate: listUsers,
 		},
@@ -52,7 +52,7 @@ func tableBackstageUser() *plugin.Table {
 
 func tableBackstageResource() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_resource",
+		Name:        "backstage_catalog_resource",
 		Description: "Backstage resource table",
 		List: &plugin.ListConfig{
 			Hydrate: listResources,
@@ -71,7 +71,7 @@ func tableBackstageResource() *plugin.Table {
 
 func tableBackstageSystem() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_system",
+		Name:        "backstage_catalog_system",
 		Description: "Backstage system table",
 		List: &plugin.ListConfig{
 			Hydrate: listSystems,
@@ -90,7 +90,7 @@ func tableBackstageSystem() *plugin.Table {
 
 func tableBackstageDomain() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_domain",
+		Name:        "backstage_catalog_domain",
 		Description: "Backstage domain table",
 		List: &plugin.ListConfig{
 			Hydrate: listDomains,
@@ -108,7 +108,7 @@ func tableBackstageDomain() *plugin.Table {
 
 func tableBackstageLocation() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_location",
+		Name:        "backstage_catalog_location",
 		Description: "Backstage location table",
 		List: &plugin.ListConfig{
 			Hydrate: listLocations,
@@ -126,7 +126,7 @@ func tableBackstageLocation() *plugin.Table {
 
 func tableBackstageTemplate() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_template",
+		Name:        "backstage_catalog_template",
 		Description: "Backstage template table",
 		List: &plugin.ListConfig{
 			Hydrate: listTemplates,
@@ -146,7 +146,7 @@ func tableBackstageTemplate() *plugin.Table {
 
 func tableBackstageAPI() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_api",
+		Name:        "backstage_catalog_api",
 		Description: "Backstage API table",
 		List: &plugin.ListConfig{
 			Hydrate: listAPIs,
@@ -167,7 +167,7 @@ func tableBackstageAPI() *plugin.Table {
 
 func tableBackstageComponent() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_component",
+		Name:        "backstage_catalog_component",
 		Description: "Backstage component table",
 		List: &plugin.ListConfig{
 			Hydrate: listComponents,
@@ -187,8 +187,8 @@ func tableBackstageComponent() *plugin.Table {
 
 func tableBackstageEntity() *plugin.Table {
 	return &plugin.Table{
-		Name:        "backstage_entity",
-		Description: "Backstage entity table",
+		Name:        "backstage_catalog_entity",
+		Description: "All entities in the Backstage catalog",
 		List: &plugin.ListConfig{
 			Hydrate: listEntities,
 		},
@@ -209,65 +209,107 @@ func tableBackstageEntity() *plugin.Table {
 }
 
 func listGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your group listing logic here
+	// Get plugin config
+	config := GetConfig(d.Connection)
+
+	if config.Host == nil || config.Token == nil {
+		return nil, fmt.Errorf("host and token must be configured")
+	}
+
+	plugin.Logger(ctx).Debug("backstage_catalog_group.listGroups", "config", config)
+
+	httpClient := &http.Client{}
+	client, err := backstage.NewClient(*config.Host, *config.Token, httpClient)
+	if err != nil {
+		plugin.Logger(ctx).Error("backstage_catalog_group.listGroups", "connection_error", err)
+		return nil, fmt.Errorf("error creating backstage client: %v", err)
+	}
+
+	opts := &backstage.ListEntityOptions{
+		Filters: []string{"kind=Group"},
+		Fields:  []string{},
+	}
+
+	groups, _, err := client.Catalog.Entities.List(ctx, opts)
+	if err != nil {
+		plugin.Logger(ctx).Error("backstage_catalog_group.listGroups", "query_error", err)
+		return nil, fmt.Errorf("error listing groups: %v", err)
+	}
+
+	for _, group := range groups {
+		d.StreamListItem(ctx, group)
+	}
+
 	return nil, nil
 }
 
 func listUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your user listing logic here
+	// TODO: Implement user listing
 	return nil, nil
 }
 
 func listResources(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your resource listing logic here
+	// TODO: Implement resource listing
 	return nil, nil
 }
 
 func listSystems(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your system listing logic here
+	// TODO: Implement system listing
 	return nil, nil
 }
 
 func listDomains(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your domain listing logic here
+	// TODO: Implement domain listing
 	return nil, nil
 }
 
 func listLocations(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your location listing logic here
+	// TODO: Implement location listing
 	return nil, nil
 }
 
 func listTemplates(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your template listing logic here
+	// TODO: Implement template listing
 	return nil, nil
 }
 
 func listAPIs(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your API listing logic here
+	// TODO: Implement API listing
 	return nil, nil
 }
 
 func listComponents(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// Implement your component listing logic here
+	// TODO: Implement component listing
 	return nil, nil
 }
 
 func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	baseURL := "http://your-backstage-url"
-	httpClient := &http.Client{}
-	client, err := backstage.NewClient(baseURL, "default", httpClient)
-	if err != nil {
-		return nil, err
+	// Get plugin config
+	config := GetConfig(d.Connection)
+
+	if config.Host == nil || config.Token == nil {
+		return nil, fmt.Errorf("host and token must be configured")
 	}
 
-	entities, _, err := client.Catalog.Entities.List(ctx, &backstage.ListEntityOptions{
+	plugin.Logger(ctx).Debug("backstage_catalog_entity.listEntities", "config", config)
+
+	httpClient := &http.Client{}
+	client, err := backstage.NewClient(*config.Host, *config.Token, httpClient)
+	if err != nil {
+		plugin.Logger(ctx).Error("backstage_catalog_entity.listEntities", "connection_error", err)
+		return nil, fmt.Errorf("error creating backstage client: %v", err)
+	}
+
+	opts := &backstage.ListEntityOptions{
 		Filters: []string{},
 		Fields:  []string{},
 		Order:   []backstage.ListEntityOrder{{Direction: backstage.OrderDescending, Field: "metadata.name"}},
-	})
+	}
+
+	entities, _, err := client.Catalog.Entities.List(ctx, opts)
 	if err != nil {
-		return nil, err
+		plugin.Logger(ctx).Error("backstage_catalog_entity.listEntities", "query_error", err)
+		return nil, fmt.Errorf("error listing entities: %v", err)
 	}
 
 	for _, entity := range entities {
