@@ -4,7 +4,10 @@ go 1.23
 
 toolchain go1.23.2
 
-require github.com/turbot/steampipe-plugin-sdk/v5 v5.10.4
+require (
+	github.com/datolabs-io/go-backstage/v3 v3.0.0
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.10.4
+)
 
 require (
 	cloud.google.com/go v0.112.0 // indirect
@@ -23,7 +26,6 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
-	github.com/datolabs-io/go-backstage/v3 v3.0.0 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/eko/gocache/lib/v4 v4.1.5 // indirect

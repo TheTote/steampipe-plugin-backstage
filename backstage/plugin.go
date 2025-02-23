@@ -2,20 +2,10 @@ package backstage
 
 import (
 	"context"
-	"os"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
-
-type backstageConfig struct {
-	Host  *string `cty:"host"`
-	Token *string `cty:"token"`
-}
-
-func ConfigInstance() interface{} {
-	return &backstageConfig{}
-}
 
 func Plugin(ctx context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
@@ -24,15 +14,14 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			NewInstance: ConfigInstance,
 			Schema: map[string]*schema.Attribute{
 				"host": {
-					Type:                schema.TypeString,
-					Required:            true,
-					MarkdownDescription: "Backstage instance URL (e.g., https://backstage.example.com)",
+					Type:        schema.TypeString,
+					Required:    true,
+					Description: "Backstage instance URL (e.g., https://backstage.example.com)",
 				},
 				"token": {
-					Type:                schema.TypeString,
-					Required:            true,
-					MarkdownDescription: "Backstage API token for authentication",
-					Sensitive:           true,
+					Type:        schema.TypeString,
+					Required:    true,
+					Description: "Backstage API token for authentication",
 				},
 			},
 		},
@@ -50,25 +39,4 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		},
 	}
 	return p
-}
-
-func GetConfig(connection *plugin.Connection) backstageConfig {
-	config := backstageConfig{}
-
-	// Load from config file first
-	if connection != nil {
-		if config, ok := connection.Config.(backstageConfig); ok {
-			return config
-		}
-	}
-
-	// Override with environment variables if present
-	if host := os.Getenv("BACKSTAGE_HOST"); host != "" {
-		config.Host = &host
-	}
-	if token := os.Getenv("BACKSTAGE_TOKEN"); token != "" {
-		config.Token = &token
-	}
-
-	return config
 }
