@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  steampipe:
+    build:
+      context: .
+    command: ["service", "start", "--foreground", "--show-password"]
+    ports:
+      - 9193:9193
+      - 9194:9194
+    volumes:
+      - ./.steampipe/config:/home/steampipe/.steampipe/config
+      - ./build/steampipe-plugin-backstage.plugin:/home/steampipe/.steampipe/plugins/local/backstage/backstage.plugin
+      - ./logs:/home/steampipe/.steampipe/logs
+    environment:
+      # Steampipe configuration
+      - STEAMPIPE_DATABASE_PASSWORD=steampipe
+      - STEAMPIPE_CACHE=true
+      - STEAMPIPE_CACHE_MAX_SIZE_MB=4096
+      - STEAMPIPE_CACHE_TTL=5
+      - STEAMPIPE_QUERY_TIMEOUT=120
+      - STEAMPIPE_MAX_PARALLEL=10
+      - STEAMPIPE_LOG_LEVEL=TRACE
+      # Backstage configuration
+      - BACKSTAGE_HOST=${BACKSTAGE_HOST:-https://demo.backstage.io}
+      - BACKSTAGE_TOKEN=${BACKSTAGE_TOKEN}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"

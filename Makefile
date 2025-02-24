@@ -12,6 +12,10 @@
 install: ## Install the plugin
 	go build -o ~/.steampipe/plugins/hub.steampipe.io/plugins/chussenot/backstage.plugin *.go
 
+.PHONY: build
+build: ## Build the plugin
+	go build -o ./build/steampipe-plugin-backstage.plugin *.go
+
 test:
 	go test -v ./...
 
@@ -20,3 +24,13 @@ docs:
 
 config: ## Copy the backstage config to the steampipe config folder
 	cp .steampipe/config/backstage.spc $(HOME)/.steampipe/config/backstage.spc
+
+.DEFAULT_GOAL := help
+
+help:
+	@echo "Available targets:"
+	@echo "  install: Install the plugin"
+	@echo "  build: Build the plugin"
+	@echo "  test: Run tests"
+	@echo "  docs: Generate documentation"
+	@echo "  config: Copy the backstage config to the steampipe config folder"
