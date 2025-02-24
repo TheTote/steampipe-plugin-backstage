@@ -246,7 +246,6 @@ func listGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	opts := &backstage.ListEntityOptions{
 		Filters: []string{"kind=Group"},
 		Fields:  []string{},
-		Limit:   int(limit),
 	}
 
 	// Handle pagination
@@ -266,7 +265,6 @@ func listGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 		if cursor == "" {
 			break
 		}
-		opts.After = cursor
 	}
 
 	return nil, nil
@@ -367,7 +365,6 @@ func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 
 	opts := &backstage.ListEntityOptions{
 		Fields: []string{},
-		Limit:  int(limit),
 	}
 
 	// Handle pagination using cursor-based pagination
@@ -383,17 +380,11 @@ func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDat
 			d.StreamListItem(ctx, entity)
 		}
 
-		// Check if we've reached the limit
-		if limit != nil && d.RowsProcessed() >= *limit {
-			return nil, nil
-		}
-
 		// Get next page cursor
 		cursor = resp.Header.Get("Link")
 		if cursor == "" {
 			break
 		}
-		opts.After = cursor
 	}
 
 	return nil, nil
