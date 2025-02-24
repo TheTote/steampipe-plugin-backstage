@@ -9,9 +9,10 @@ services:
       - 9193:9193
       - 9194:9194
     volumes:
-      - ./.steampipe/config:/home/steampipe/.steampipe/config
+      - steampipe-config:/home/steampipe/.steampipe/config
+      - steampipe-db:/home/steampipe/.steampipe/db
+      - steampipe-logs:/home/steampipe/.steampipe/logs
       - ./build/steampipe-plugin-backstage.plugin:/home/steampipe/.steampipe/plugins/local/backstage/backstage.plugin
-      - ./logs:/home/steampipe/.steampipe/logs
     environment:
       # Steampipe configuration
       - STEAMPIPE_DATABASE_PASSWORD=steampipe
@@ -29,3 +30,8 @@ services:
       options:
         max-size: "5m"
         max-file: "2"
+
+volumes:
+  steampipe-config:
+  steampipe-db:
+  steampipe-logs:
