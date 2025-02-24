@@ -7,7 +7,7 @@ import (
 	"github.com/datolabs-io/go-backstage/v3"
 )
 
-func getClient(config backstageConfig) (*backstage.Client, error) {
+func getClient(config BackstageConfig) (*backstage.Client, error) {
 	if config.Host == nil || config.Token == nil {
 		return nil, fmt.Errorf("host and token must be configured")
 	}

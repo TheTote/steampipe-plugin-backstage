@@ -5,7 +5,7 @@ info:
   description: The Backstage backend plugin that provides the Backstage catalog
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
   contact: {}
 servers:
   - url: https://console-int.believe.tech/api/catalog/

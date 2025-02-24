@@ -4,26 +4,36 @@ import (
 	"os"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
 
-type backstageConfig struct {
+type BackstageConfig struct {
 	Host  *string `cty:"host"`
 	Token *string `cty:"token"`
 }
 
-func ConfigInstance() interface{} {
-	return &backstageConfig{}
+var ConfigSchema = map[string]*schema.Attribute{
+	"host": {
+		Type:     schema.TypeString,
+		Required: true,
+	},
+	"token": {
+		Type:     schema.TypeString,
+		Required: true,
+	},
 }
 
-func GetConfig(connection *plugin.Connection) backstageConfig {
-	config := backstageConfig{}
+func ConfigInstance() interface{} {
+	return &BackstageConfig{}
+}
 
-	if connection != nil {
-		if config, ok := connection.Config.(backstageConfig); ok {
-			return config
-		}
+func GetConfig(connection *plugin.Connection) BackstageConfig {
+	if connection == nil || connection.Config == nil {
+		return BackstageConfig{}
 	}
+	config, _ := connection.Config.(BackstageConfig)
 
+	// Environment variables override connection config
 	if host := os.Getenv("BACKSTAGE_HOST"); host != "" {
 		config.Host = &host
 	}

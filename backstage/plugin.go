@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
 
 func Plugin(ctx context.Context) *plugin.Plugin {
@@ -12,16 +11,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		Name: "steampipe-plugin-backstage",
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
-			Schema: map[string]*schema.Attribute{
-				"host": {
-					Type:     schema.TypeString,
-					Required: true,
-				},
-				"token": {
-					Type:     schema.TypeString,
-					Required: true,
-				},
-			},
+			Schema:      ConfigSchema,
 		},
 		TableMap: map[string]*plugin.Table{
 			"backstage_catalog_entity":    tableBackstageEntity(),
