@@ -16,20 +16,11 @@ func tableBackstageTemplate() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listTemplates,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the template"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the template"},
-			{Name: "title", Type: proto.ColumnType_STRING, Description: "Title of the template"},
-			{Name: "description", Type: proto.ColumnType_STRING, Description: "Description of the template"},
-			{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the template"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-			{Name: "metadata", Type: proto.ColumnType_JSON, Description: "Full metadata of the template"},
-			{Name: "spec", Type: proto.ColumnType_JSON, Description: "Full specification of the template"},
 			{Name: "parameters", Type: proto.ColumnType_JSON, Description: "Parameters defined in the template"},
 			{Name: "steps", Type: proto.ColumnType_JSON, Description: "Steps defined in the template"},
-		},
+		}...), // Union of commonColumns and specific columns for templates
 	}
 }
 

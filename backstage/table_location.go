@@ -16,14 +16,10 @@ func tableBackstageLocation() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listLocations,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the location"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the location"},
 			{Name: "target", Type: proto.ColumnType_STRING, Description: "Target of the location"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-		},
+		}...), // Union of commonColumns and specific columns for locations
 	}
 }
 

@@ -16,14 +16,9 @@ func tableBackstageDomain() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listDomains,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the domain"},
-			{Name: "description", Type: proto.ColumnType_STRING, Description: "Description of the domain"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the domain"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-		},
+		}...), // Union of commonColumns and specific columns for domains
 	}
 }
 

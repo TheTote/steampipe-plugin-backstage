@@ -16,17 +16,9 @@ func tableBackstageSystem() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listSystems,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the system"},
-			{Name: "description", Type: proto.ColumnType_STRING, Description: "Description of the system"},
-			{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the system"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "domain", Type: proto.ColumnType_STRING, Description: "Domain the system belongs to"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-			{Name: "metadata", Type: proto.ColumnType_JSON, Description: "Full metadata of the system"},
-			{Name: "spec", Type: proto.ColumnType_JSON, Description: "Full specification of the system"},
-		},
+		}...), // Union of commonColumns and specific columns for systems
 	}
 }
 

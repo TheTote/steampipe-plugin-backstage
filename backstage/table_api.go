@@ -9,6 +9,14 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
+// Define additional columns specific to the API table
+var apiSpecificColumns = []*plugin.Column{
+	{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the API"},
+	{Name: "definition", Type: proto.ColumnType_JSON, Description: "API definition"},
+	{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the API"},
+	{Name: "lifecycle", Type: proto.ColumnType_STRING, Description: "Lifecycle state of the API"},
+}
+
 func tableBackstageAPI() *plugin.Table {
 	return &plugin.Table{
 		Name:        "backstage_catalog_api",
@@ -16,13 +24,7 @@ func tableBackstageAPI() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listAPIs,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the API"},
-			{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the API"},
-			{Name: "lifecycle", Type: proto.ColumnType_STRING, Description: "Lifecycle state of the API"},
-			{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the API"},
-			{Name: "definition", Type: proto.ColumnType_JSON, Description: "API definition"},
-		},
+		Columns: append(commonColumns, apiSpecificColumns...), // Union of commonColumns and apiSpecificColumns
 	}
 }
 

@@ -14,16 +14,11 @@ func tableBackstageUser() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listUsers,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the user"},
-			{Name: "description", Type: proto.ColumnType_STRING, Description: "Description of the user"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "email", Type: proto.ColumnType_STRING, Description: "Email of the user"},
 			{Name: "picture", Type: proto.ColumnType_STRING, Description: "Picture URL of the user"},
 			{Name: "memberof", Type: proto.ColumnType_JSON, Description: "Groups the user belongs to"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-		},
+		}...), // Union of commonColumns and specific columns for users
 	}
 }
 

@@ -16,13 +16,10 @@ func tableBackstageComponent() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listComponents,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the component"},
-			{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the component"},
-			{Name: "lifecycle", Type: proto.ColumnType_STRING, Description: "Lifecycle state of the component"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the component"},
 			{Name: "system", Type: proto.ColumnType_STRING, Description: "System the component belongs to"},
-		},
+		}...), // Union of commonColumns and specific columns for components
 	}
 }
 

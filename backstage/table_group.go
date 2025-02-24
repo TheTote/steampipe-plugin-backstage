@@ -16,16 +16,9 @@ func tableBackstageGroup() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listGroups,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the group"},
-			{Name: "description", Type: proto.ColumnType_STRING, Description: "Description of the group"},
+		Columns: append(commonColumns, []*plugin.Column{
 			{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the entity"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "title", Type: proto.ColumnType_STRING, Description: "Display title"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-			{Name: "links", Type: proto.ColumnType_JSON, Description: "Links associated with the entity"},
-		},
+		}...), // Union of commonColumns and specific columns for groups
 	}
 }
 

@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/datolabs-io/go-backstage/v3"
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
@@ -16,17 +15,7 @@ func tableBackstageResource() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listResources,
 		},
-		Columns: []*plugin.Column{
-			{Name: "name", Type: proto.ColumnType_STRING, Description: "Name of the resource"},
-			{Name: "type", Type: proto.ColumnType_STRING, Description: "Type of the resource"},
-			{Name: "owner", Type: proto.ColumnType_STRING, Description: "Owner of the resource"},
-			{Name: "system", Type: proto.ColumnType_STRING, Description: "System the resource belongs to"},
-			{Name: "namespace", Type: proto.ColumnType_STRING, Description: "Namespace of the entity"},
-			{Name: "labels", Type: proto.ColumnType_JSON, Description: "Labels attached to the entity"},
-			{Name: "annotations", Type: proto.ColumnType_JSON, Description: "Annotations on the entity"},
-			{Name: "metadata", Type: proto.ColumnType_JSON, Description: "Full metadata of the resource"},
-			{Name: "spec", Type: proto.ColumnType_JSON, Description: "Full specification of the resource"},
-		},
+		Columns: commonColumns,
 	}
 }
 
