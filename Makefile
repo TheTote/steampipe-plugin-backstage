@@ -10,7 +10,7 @@
 # - docs: Generates documentation for the project.
 
 install: ## Install the plugin
-	go build -o ~/.steampipe/plugins/hub.steampipe.io/plugins/chussenot/backstage.plugin *.go
+	go build -o ~/.steampipe/plugins/local/steampipe-plugin-backstage/steampipe-plugin-backstage.plugin *.go
 
 .PHONY: build
 build: ## Build the plugin
