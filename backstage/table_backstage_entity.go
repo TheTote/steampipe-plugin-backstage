@@ -20,37 +20,49 @@ func tableBackstageEntity() *plugin.Table {
 }
 
 func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	logger := plugin.Logger(ctx)
+
 	config := GetConfig(d.Connection)
 	if config.Host == nil || config.Token == nil {
+		logger.Error("listEntities", "configuration_error", "host and token must be configured")
 		return nil, fmt.Errorf("host and token must be configured")
 	}
 
-	client, err := getClient(config)
+	client, err := connect(ctx, d)
 	if err != nil {
+		logger.Error("listEntities", "connection_error", err)
 		return nil, err
 	}
+
+	logger.Debug("listEntities", "status", "starting entity fetch")
 
 	opts := &backstage.ListEntityOptions{
 		Fields: []string{},
 	}
 
 	var cursor string
+	var entityCount int
 	for {
 		entities, resp, err := client.Catalog.Entities.List(ctx, opts)
 		if err != nil {
-			plugin.Logger(ctx).Error("backstage_catalog_entity.listEntities", "query_error", err)
+			logger.Error("listEntities", "query_error", err, "cursor", cursor)
 			return nil, fmt.Errorf("error listing entities: %v", err)
 		}
 
 		for _, entity := range entities {
+			entityCount++
 			d.StreamListItem(ctx, entity)
 		}
+
+		logger.Debug("listEntities", "batch_count", len(entities), "total_count", entityCount)
 
 		cursor = resp.Header.Get("Link")
 		if cursor == "" {
 			break
 		}
+		logger.Debug("listEntities", "pagination_cursor", cursor)
 	}
 
+	logger.Info("listEntities", "final_count", entityCount)
 	return nil, nil
 }

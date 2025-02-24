@@ -22,14 +22,17 @@ services:
       - STEAMPIPE_QUERY_TIMEOUT=120
       - STEAMPIPE_MAX_PARALLEL=10
       - STEAMPIPE_LOG_LEVEL=TRACE
+      - STEAMPIPE_LOG_FORMAT=json
       # Backstage configuration
       - BACKSTAGE_HOST=${BACKSTAGE_HOST:-https://demo.backstage.io}
       - BACKSTAGE_TOKEN=${BACKSTAGE_TOKEN}
     logging:
       driver: "json-file"
       options:
-        max-size: "5m"
-        max-file: "2"
+        max-size: "10m"
+        max-file: "3"
+        tag: "{{.Name}}"
+        labels: "steampipe"
 
 volumes:
   steampipe-config:
