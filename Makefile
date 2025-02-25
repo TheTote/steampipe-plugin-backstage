@@ -10,6 +10,7 @@
 # - docs: Generates documentation for the project.
 
 install: ## Install the plugin
+	rm -rf ~/.steampipe/plugins/local/steampipe-plugin-backstage
 	go build -o ~/.steampipe/plugins/local/steampipe-plugin-backstage/steampipe-plugin-backstage.plugin *.go
 
 .PHONY: build
