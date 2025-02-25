@@ -9,6 +9,7 @@ import (
 var commonColumns = []*plugin.Column{
 
 	// Common fields
+	{Name: "apiVersion", Type: proto.ColumnType_STRING, Description: "The API version of the entity"},
 	{Name: "metadata", Type: proto.ColumnType_JSON, Description: "The full metadata of the entity"},
 	{Name: "spec", Type: proto.ColumnType_JSON, Description: "The specification data of the entity"},
 	{Name: "relations", Type: proto.ColumnType_JSON, Description: "The relations of the entity to other entities"},
