@@ -1,5 +1,5 @@
 connection "backstage" {
-    plugin = "chussenot/backstage"
+    plugin = "local/steampipe-plugin-backstage"
 
     # Backstage instance URL (required)
     # Can also be set with BACKSTAGE_HOST environment variable

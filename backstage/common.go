@@ -8,7 +8,7 @@ import (
 // Common columns that appear in most catalog tables
 var commonColumns = []*plugin.Column{
 
-	{Name: "name", Type: proto.ColumnType_STRING, Description: "The name of the entity"},
+	{Name: "kind", Type: proto.ColumnType_STRING, Description: "The kind of the entity"},
 	// Common JSON fields
 	{Name: "spec", Type: proto.ColumnType_JSON, Description: "The specification data of the entity"},
 	{Name: "metadata", Type: proto.ColumnType_JSON, Description: "The full metadata of the entity"},
@@ -17,7 +17,6 @@ var commonColumns = []*plugin.Column{
 
 	// // Required metadata fields
 	// {Name: "namespace", Type: proto.ColumnType_STRING, Description: "The namespace the entity belongs to"},
-	// {Name: "kind", Type: proto.ColumnType_STRING, Description: "The kind of the entity"},
 	// // Optional metadata fields
 	// {Name: "title", Type: proto.ColumnType_STRING, Description: "A display name of the entity"},
 	// {Name: "description", Type: proto.ColumnType_STRING, Description: "A description of the entity"},
@@ -36,15 +35,15 @@ var commonColumns = []*plugin.Column{
 }
 
 var commonFields = []string{
+	"kind",
 	"metadata.name",
 	"metadata.namespace",
-	"metadata.kind",
 	"metadata.title",
 	"metadata.description",
-	"metadata.labels",
-	"metadata.annotations",
+	// "metadata.labels",
+	// "metadata.annotations",
 	"metadata.tags",
-	"metadata.links",
+	// "metadata.links",
 	"spec.type",
 	"spec.lifecycle",
 	"spec.owner",
