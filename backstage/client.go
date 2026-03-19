@@ -12,11 +12,26 @@ func getClient(config BackstageConfig) (*backstage.Client, error) {
 		return nil, fmt.Errorf("host and token must be configured")
 	}
 
-	httpClient := &http.Client{}
-	client, err := backstage.NewClient(*config.Host, *config.Token, httpClient)
+	httpClient := &http.Client{
+		Transport: &tokenRoundTripper{
+			token:  *config.Token,
+			client: http.DefaultTransport,
+		},
+	}
+	client, err := backstage.NewClient(*config.Host, "", httpClient)
 	if err != nil {
 		return nil, fmt.Errorf("error creating backstage client: %v", err)
 	}
 
 	return client, nil
+}
+
+type tokenRoundTripper struct {
+	token  string
+	client http.RoundTripper
+}
+
+func (t *tokenRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", t.token))
+	return t.client.RoundTrip(req)
 }
