@@ -23,11 +23,7 @@ func tableBackstageSystem() *plugin.Table {
 }
 
 func listSystems(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	config := GetConfig(d.Connection)
-	client, err := getClient(config)
-	if err != nil {
-		return nil, err
-	}
+	client := connect(ctx, d)
 
 	opts := &backstage.ListEntityOptions{
 		Filters: []string{"kind=System"},

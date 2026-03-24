@@ -1,8 +1,6 @@
-module github.com/chussenot/steampipe-plugin-backstage
+module github.com/thetote/steampipe-plugin-backstage
 
-go 1.23
-
-toolchain go1.23.2
+go 1.26
 
 require (
 	github.com/datolabs-io/go-backstage/v3 v3.0.0

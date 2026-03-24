@@ -22,17 +22,7 @@ func tableBackstageEntity() *plugin.Table {
 func listEntities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	logger := plugin.Logger(ctx)
 
-	config := GetConfig(d.Connection)
-	if config.Host == nil || config.Token == nil {
-		logger.Error("listEntities", "configuration_error", "host and token must be configured")
-		return nil, fmt.Errorf("host and token must be configured")
-	}
-
-	client, err := connect(ctx, d)
-	if err != nil {
-		logger.Error("listEntities", "connection_error", err)
-		return nil, err
-	}
+	client := connect(ctx, d)
 
 	logger.Debug("listEntities", "status", "starting entity fetch")
 

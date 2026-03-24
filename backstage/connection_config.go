@@ -1,8 +1,6 @@
 package backstage
 
 import (
-	"os"
-
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
@@ -32,14 +30,6 @@ func GetConfig(connection *plugin.Connection) BackstageConfig {
 		return BackstageConfig{}
 	}
 	config, _ := connection.Config.(BackstageConfig)
-
-	// Environment variables override connection config
-	if host := os.Getenv("BACKSTAGE_HOST"); host != "" {
-		config.Host = &host
-	}
-	if token := os.Getenv("BACKSTAGE_TOKEN"); token != "" {
-		config.Token = &token
-	}
 
 	return config
 }

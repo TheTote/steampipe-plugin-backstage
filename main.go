@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/chussenot/steampipe-plugin-backstage/backstage"
+	"github.com/thetote/steampipe-plugin-backstage/backstage"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 

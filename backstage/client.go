@@ -7,18 +7,21 @@ import (
 	"github.com/datolabs-io/go-backstage/v3"
 )
 
-func getClient(config BackstageConfig) (*backstage.Client, error) {
-	if config.Host == nil || config.Token == nil {
-		return nil, fmt.Errorf("host and token must be configured")
+func getClient(host, token string) (*backstage.Client, error) {
+	if host == "" {
+		return nil, fmt.Errorf("host must be configured")
+	}
+	if token == "" {
+		return nil, fmt.Errorf("token must be configured")
 	}
 
 	httpClient := &http.Client{
 		Transport: &tokenRoundTripper{
-			token:  *config.Token,
+			token:  token,
 			client: http.DefaultTransport,
 		},
 	}
-	client, err := backstage.NewClient(*config.Host, "", httpClient)
+	client, err := backstage.NewClient(host, "", httpClient)
 	if err != nil {
 		return nil, fmt.Errorf("error creating backstage client: %v", err)
 	}
