@@ -2,6 +2,34 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 1.0.0 (2026-03-24)
+
+
+### Features
+
+* Scaffold the needed tables ([b56e882](https://github.com/TheTote/steampipe-plugin-backstage/commit/b56e8827c4680c896983bbfa736025098c4a5f52))
+* **setup:** Setup the plugin files ([a9e8a91](https://github.com/TheTote/steampipe-plugin-backstage/commit/a9e8a91979ccf05743fa4457a80116e0a5d2cec2))
+* **table:** Start to write the table ([bdb4906](https://github.com/TheTote/steampipe-plugin-backstage/commit/bdb4906a9d9ff52d04f4cbe1d3a9c60b0f18f44e))
+* **v0.0.0:** Can compile ([53100e4](https://github.com/TheTote/steampipe-plugin-backstage/commit/53100e4e1ffb937bffeda80a3cabd6d6017989cd))
+
+
+### Bug Fixes
+
+* Add fixes ([1704e3c](https://github.com/TheTote/steampipe-plugin-backstage/commit/1704e3cb085692a87b7c7fec6c7ad41262248937))
+* add token via roundtripper ([802e6bc](https://github.com/TheTote/steampipe-plugin-backstage/commit/802e6bcd45f4f095df3c11bb05ca492583aad948))
+* Fix the plugin installation path ([b35cfba](https://github.com/TheTote/steampipe-plugin-backstage/commit/b35cfba2bea77241212064ec201da95af42f36c0))
+* Remove the CHANGELOG ([a3fbf18](https://github.com/TheTote/steampipe-plugin-backstage/commit/a3fbf18426bdbaa6ac09125658dbc8ddbfdc8140))
+* Remove the config folder ([8d1e4f6](https://github.com/TheTote/steampipe-plugin-backstage/commit/8d1e4f6deef94085afc9fcd368cf622e91657d6f))
+* Remove the desc ([16cfe67](https://github.com/TheTote/steampipe-plugin-backstage/commit/16cfe6739650fa791fb3c289b9e7c9936eafb0f1))
+* Remove the plugin before install it. ([981daab](https://github.com/TheTote/steampipe-plugin-backstage/commit/981daab63447ffd62249c5ccc201e0c4b387ed56))
+* Rename the file to follow the conventions ([7f8ed2d](https://github.com/TheTote/steampipe-plugin-backstage/commit/7f8ed2dc76b1c4febfee1248481f6d064f506aea))
+* Split the tables in multiple files ([3ba52c7](https://github.com/TheTote/steampipe-plugin-backstage/commit/3ba52c7afca16157e934572fc92067ceb7c67fb0))
+* Try to load the config ([202b717](https://github.com/TheTote/steampipe-plugin-backstage/commit/202b717643305807126a25cfd3bf6625d0bf7471))
+* Use union for common fields ([e28527d](https://github.com/TheTote/steampipe-plugin-backstage/commit/e28527da9d055e55ef7eb32489039d4acd317cb3))
+* WIP ([b3aee46](https://github.com/TheTote/steampipe-plugin-backstage/commit/b3aee463fcb3bef5ffcf747c2787c1e6e1361316))
+* WIP ([a2e1032](https://github.com/TheTote/steampipe-plugin-backstage/commit/a2e103217008197c54572d4c11bd1e2c0a4748b3))
+* WIP ([628f40e](https://github.com/TheTote/steampipe-plugin-backstage/commit/628f40e9a76004fe4751f2a33da5eb37dd77c7ae))
+
 ## 0.1.1 - 2025-02-24
 #### Bug Fixes
 - Fix the plugin installation path - (b35cfba) - Clement HUSSENOT-DESENONGES
